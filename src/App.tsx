@@ -1,56 +1,58 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
+import AnimalPage from 'components/AnimalPage';
+import NewPage from 'components/NewPage';
+import PeoplePage from 'components/PeoplePage';
+import { FunctionComponent } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { createSetPageAction } from 'redux/actions/navigation';
+import { AppState } from 'redux/types.redux';
+import { NavigationState, Page } from 'redux/types/navigation';
 import './App.css';
 
-function App() {
+const App: FunctionComponent = () => {
+
+  const dispatch = useDispatch();
+  const { currentPage } = useSelector(({ navigation }: AppState): NavigationState => navigation);
+
+  const handlePageChange = (page: Page) => {
+    dispatch(createSetPageAction(page));
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
+      <h1>MF React Redux Prototype</h1>
+
+      <button
+        type="button"
+        className="checkout-header__logo-btn"
+        onClick={() => {handlePageChange(Page.HOME)}}
+        data-test="checkout-header-logo"
+      >HOME</button>
+
+      <button
+        type="button"
+        className="checkout-header__logo-btn"
+        onClick={() => {handlePageChange(Page.ANIMALS)}}
+        data-test="checkout-header-logo"
+      >ANIMALS</button>
+
+      <button
+        type="button"
+        className="checkout-header__logo-btn"
+        onClick={() => {handlePageChange(Page.PEOPLE)}}
+        data-test="checkout-header-logo"
+      >PEOPLE</button>
+
+      <button
+        type="button"
+        className="checkout-header__logo-btn"
+        onClick={() => {handlePageChange(Page.NEW_PAGE)}}
+        data-test="checkout-header-logo"
+      >New PAGE</button>
+
+      {currentPage === Page.ANIMALS && <AnimalPage />}
+      {currentPage === Page.PEOPLE && <PeoplePage />}
+      {currentPage === Page.NEW_PAGE && <NewPage />}
+
     </div>
   );
 }
